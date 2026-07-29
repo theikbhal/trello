@@ -1,0 +1,38 @@
+<% content_for :title, "Edit Card" %>
+
+<div class="max-w-lg mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Edit Card</h1>
+  <%= form_with model: [@board, @card], class: "space-y-4" do |f| %>
+    <div>
+      <%= f.label :title, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :title, class: "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" %>
+    </div>
+    <div>
+      <%= f.label :description, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_area :description, rows: 3, class: "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" %>
+    </div>
+    <div>
+      <%= f.label :assignee, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :assignee, placeholder: "Person name", class: "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" %>
+    </div>
+    <div>
+      <%= f.label :deadline, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.datetime_local_field :deadline, class: "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" %>
+    </div>
+    <div>
+      <%= f.label :tag_ids, "Tags", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <div class="flex flex-wrap gap-2">
+        <% @all_tags.each do |tag| %>
+          <label class="flex items-center gap-1 text-sm text-gray-600">
+            <%= f.check_box :tag_ids, { multiple: true, checked: @card.tag_ids.include?(tag.id) }, tag.id, nil %>
+            <%= tag.name %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <%= f.submit "Update", class: "bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-gray-700" %>
+      <%= link_to "Cancel", @card.list ? board_path(@card.list.board) : root_path, class: "text-sm text-gray-500 px-4 py-2 hover:text-gray-700" %>
+    </div>
+  <% end %>
+</div>

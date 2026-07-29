@@ -13,20 +13,29 @@ class CardsController < ApplicationController
     if @card.save
       redirect_to @board, notice: "Card added."
     else
-      render :new, status: :unprocessable_entity
+      redirect_to @board, alert: @card.errors.full_messages.to_sentence
     end
+  end
+
+  def show
+    @card = @board.cards.find(params[:id])
+    @comment = @card.comments.new
   end
 
   def edit
     @card = @board.cards.find(params[:id])
+    @all_tags = Tag.all.order(:name)
   end
 
   def update
     @card = @board.cards.find(params[:id])
     if @card.update(card_params)
+      if params[:card][:tag_ids].present?
+        @card.tag_ids = params[:card][:tag_ids].reject(&:blank?)
+      end
       redirect_to @card.list.board, notice: "Card updated."
     else
-      render :edit, status: :unprocessable_entity
+      redirect_to @card.list.board, alert: @card.errors.full_messages.to_sentence
     end
   end
 
@@ -39,11 +48,17 @@ class CardsController < ApplicationController
 
   def move
     @card = @board.cards.find(params[:id])
+    target_board_id = params[:board_id]
     target_list_id = params[:list_id]
     new_position = params[:position].to_i
 
     if target_list_id.present?
-      target_list = @board.lists.find(target_list_id)
+      if target_board_id.present? && target_board_id.to_i != @board.id
+        target_board = Board.find(target_board_id)
+        target_list = target_board.lists.find(target_list_id)
+      else
+        target_list = @board.lists.find(target_list_id)
+      end
       @card.update!(list: target_list)
     end
 
@@ -51,7 +66,7 @@ class CardsController < ApplicationController
       @card.insert_at(new_position)
     end
 
-    redirect_to @board
+    redirect_to @card.list.board
   end
 
   private
@@ -61,6 +76,6 @@ class CardsController < ApplicationController
   end
 
   def card_params
-    params.require(:card).permit(:title, :description)
+    params.require(:card).permit(:title, :description, :deadline, :assignee, tag_ids: [])
   end
 end

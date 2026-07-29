@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_29_010712) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_29_013212) do
   create_table "boards", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -18,14 +18,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_010712) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "cards", force: :cascade do |t|
+  create_table "card_tags", force: :cascade do |t|
+    t.integer "card_id", null: false
     t.datetime "created_at", null: false
+    t.integer "tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_card_tags_on_card_id"
+    t.index ["tag_id"], name: "index_card_tags_on_tag_id"
+  end
+
+  create_table "cards", force: :cascade do |t|
+    t.string "assignee"
+    t.datetime "created_at", null: false
+    t.datetime "deadline"
     t.text "description"
     t.integer "list_id", null: false
     t.integer "position"
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["list_id"], name: "index_cards_on_list_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.integer "card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_comments_on_card_id"
   end
 
   create_table "lists", force: :cascade do |t|
@@ -37,6 +56,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_010712) do
     t.index ["board_id"], name: "index_lists_on_board_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "card_tags", "cards"
+  add_foreign_key "card_tags", "tags"
   add_foreign_key "cards", "lists"
+  add_foreign_key "comments", "cards"
   add_foreign_key "lists", "boards"
 end

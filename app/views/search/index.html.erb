@@ -1,0 +1,60 @@
+<% content_for :title, "Search" %>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Search</h1>
+
+  <%= form_with url: search_path, method: :get, class: "mb-8" do |f| %>
+    <div class="flex gap-2">
+      <%= f.search_field :q, value: @query, placeholder: "Search boards, lists, cards...", autofocus: true, class: "flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400" %>
+      <%= f.submit "Search", class: "bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-gray-700" %>
+    </div>
+  <% end %>
+
+  <% if @query.present? %>
+    <% if @boards.any? %>
+      <section class="mb-6">
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Boards</h2>
+        <div class="space-y-2">
+          <% @boards.each do |board| %>
+            <%= link_to board_path(board), class: "block bg-white rounded border border-gray-200 p-3 hover:border-gray-300" do %>
+              <span class="font-medium text-gray-900"><%= board.name %></span>
+              <span class="text-xs text-gray-400 ml-2">board</span>
+            <% end %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+
+    <% if @lists.any? %>
+      <section class="mb-6">
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Lists</h2>
+        <div class="space-y-2">
+          <% @lists.each do |list| %>
+            <%= link_to board_path(list.board), class: "block bg-white rounded border border-gray-200 p-3 hover:border-gray-300" do %>
+              <span class="font-medium text-gray-900"><%= list.name %></span>
+              <span class="text-xs text-gray-400 ml-2">in <%= list.board.name %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+
+    <% if @cards.any? %>
+      <section class="mb-6">
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Cards</h2>
+        <div class="space-y-2">
+          <% @cards.each do |card| %>
+            <%= link_to board_card_path(card.list.board, card), class: "block bg-white rounded border border-gray-200 p-3 hover:border-gray-300" do %>
+              <span class="font-medium text-gray-900"><%= card.title %></span>
+              <span class="text-xs text-gray-400 ml-2"><%= card.list.name %> · <%= card.list.board.name %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+
+    <% if @boards.none? && @lists.none? && @cards.none? %>
+      <p class="text-gray-400 text-sm">No results for "<%= @query %>"</p>
+    <% end %>
+  <% end %>
+</div>

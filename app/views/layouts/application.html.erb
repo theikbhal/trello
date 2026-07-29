@@ -28,12 +28,17 @@
           <% end %>
           <div class="hidden sm:flex items-center gap-4 text-sm text-gray-500">
             <%= link_to "Boards", root_path, class: "hover:text-gray-800" %>
+            <%= link_to "Search", search_path, class: "hover:text-gray-800" %>
             <%= link_to "Help", help_path, class: "hover:text-gray-800" %>
             <%= link_to "Why?", why_path, class: "hover:text-gray-800" %>
             <%= link_to "Guide", onboarding_path, class: "hover:text-gray-800" %>
           </div>
         </div>
-        <%= link_to new_board_path, class: "flex items-center gap-1.5 text-sm bg-gray-800 text-white px-3 py-1.5 rounded hover:bg-gray-700" do %>
+        <div class="flex items-center gap-3">
+          <%= form_with url: search_path, method: :get, class: "hidden sm:block" do |f| %>
+            <%= f.search_field :q, placeholder: "Search...", class: "border border-gray-200 rounded px-2 py-1 text-xs w-32 focus:outline-none focus:ring-1 focus:ring-gray-400" %>
+          <% end %>
+          <%= link_to new_board_path, class: "flex items-center gap-1.5 text-sm bg-gray-800 text-white px-3 py-1.5 rounded hover:bg-gray-700" do %>
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
@@ -48,6 +53,14 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
           <%= notice %>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="bg-red-50 border-b border-red-200 px-4 py-2 text-sm text-red-700 flex items-center gap-2">
+          <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <%= alert %>
         </div>
       <% end %>
       <%= yield %>

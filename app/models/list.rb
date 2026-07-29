@@ -5,4 +5,8 @@ class List < ApplicationRecord
   validates :name, presence: true
 
   acts_as_list scope: :board
+
+  def self.search(query)
+    where("name ILIKE :q", q: "%#{query}%")
+  end
 end

@@ -11,7 +11,7 @@ class ListsController < ApplicationController
     if @list.save
       redirect_to @board, notice: "List added."
     else
-      render :new, status: :unprocessable_entity
+      redirect_to @board, alert: @list.errors.full_messages.to_sentence
     end
   end
 
@@ -24,7 +24,7 @@ class ListsController < ApplicationController
     if @list.update(list_params)
       redirect_to @board, notice: "List updated."
     else
-      render :edit, status: :unprocessable_entity
+      redirect_to @board, alert: @list.errors.full_messages.to_sentence
     end
   end
 
