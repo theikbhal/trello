@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Trello" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
+      <div class="px-4 h-12 flex items-center justify-between">
+        <%= link_to "Trello", root_path, class: "text-lg font-bold text-gray-800 hover:text-gray-600" %>
+        <%= link_to "New Board", new_board_path, class: "text-sm bg-gray-800 text-white px-3 py-1.5 rounded hover:bg-gray-700" %>
+      </div>
+    </nav>
+    <main class="pt-12">
+      <% if notice %>
+        <div class="bg-green-50 border-b border-green-200 px-4 py-2 text-sm text-green-700"><%= notice %></div>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

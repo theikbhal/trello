@@ -1,0 +1,20 @@
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">My Boards</h1>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @boards.each do |board| %>
+      <%= link_to board_path(board), class: "block bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md hover:border-gray-300 transition-shadow" do %>
+        <h2 class="font-semibold text-gray-900"><%= board.name %></h2>
+        <% if board.description.present? %>
+          <p class="text-sm text-gray-500 mt-1"><%= board.description %></p>
+        <% end %>
+        <div class="text-xs text-gray-400 mt-3"><%= pluralize(board.lists.count, "list") %> &middot; <%= pluralize(board.cards.count, "card") %></div>
+      <% end %>
+    <% end %>
+    <% if @boards.empty? %>
+      <div class="col-span-full text-center py-12 text-gray-400">
+        <p class="text-lg mb-4">No boards yet</p>
+        <%= link_to "Create your first board", new_board_path, class: "text-sm bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700" %>
+      </div>
+    <% end %>
+  </div>
+</div>
