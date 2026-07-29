@@ -14,5 +14,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get "help", to: "pages#help"
+  get "onboarding", to: "pages#onboarding"
+  get "why", to: "pages#why"
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

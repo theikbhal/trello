@@ -1,19 +1,53 @@
 <div class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">My Boards</h1>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">My Boards</h1>
+    <%= link_to new_board_path, class: "flex items-center gap-1.5 text-sm bg-gray-800 text-white px-3 py-1.5 rounded hover:bg-gray-700" do %>
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      New Board
+    <% end %>
+  </div>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @boards.each do |board| %>
-      <%= link_to board_path(board), class: "block bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md hover:border-gray-300 transition-shadow" do %>
-        <h2 class="font-semibold text-gray-900"><%= board.name %></h2>
+      <%= link_to board_path(board), class: "block bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md hover:border-gray-300 transition-all" do %>
+        <div class="flex items-start justify-between">
+          <h2 class="font-semibold text-gray-900"><%= board.name %></h2>
+          <svg class="w-4 h-4 text-gray-300 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
         <% if board.description.present? %>
           <p class="text-sm text-gray-500 mt-1"><%= board.description %></p>
         <% end %>
-        <div class="text-xs text-gray-400 mt-3"><%= pluralize(board.lists.count, "list") %> &middot; <%= pluralize(board.cards.count, "card") %></div>
+        <div class="flex items-center gap-3 text-xs text-gray-400 mt-3">
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+            </svg>
+            <%= pluralize(board.lists.count, "list") %>
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <%= pluralize(board.cards.count, "card") %>
+          </span>
+        </div>
       <% end %>
     <% end %>
     <% if @boards.empty? %>
-      <div class="col-span-full text-center py-12 text-gray-400">
+      <div class="col-span-full text-center py-16 text-gray-400">
+        <svg class="w-12 h-12 mx-auto mb-4 text-gray-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
         <p class="text-lg mb-4">No boards yet</p>
-        <%= link_to "Create your first board", new_board_path, class: "text-sm bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700" %>
+        <%= link_to new_board_path, class: "inline-flex items-center gap-1.5 text-sm bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700" do %>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Create your first board
+        <% end %>
       </div>
     <% end %>
   </div>

@@ -8,24 +8,60 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
-    <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="apple-touch-icon" href="/icon.svg">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-100 min-h-screen flex flex-col">
     <nav class="fixed top-0 w-full bg-white border-b border-gray-200 z-50">
       <div class="px-4 h-12 flex items-center justify-between">
-        <%= link_to "Trello", root_path, class: "text-lg font-bold text-gray-800 hover:text-gray-600" %>
-        <%= link_to "New Board", new_board_path, class: "text-sm bg-gray-800 text-white px-3 py-1.5 rounded hover:bg-gray-700" %>
+        <div class="flex items-center gap-6">
+          <%= link_to root_path, class: "flex items-center gap-2 text-gray-800 hover:text-gray-600" do %>
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span class="font-bold text-lg">Trello</span>
+          <% end %>
+          <div class="hidden sm:flex items-center gap-4 text-sm text-gray-500">
+            <%= link_to "Boards", root_path, class: "hover:text-gray-800" %>
+            <%= link_to "Help", help_path, class: "hover:text-gray-800" %>
+            <%= link_to "Why?", why_path, class: "hover:text-gray-800" %>
+            <%= link_to "Guide", onboarding_path, class: "hover:text-gray-800" %>
+          </div>
+        </div>
+        <%= link_to new_board_path, class: "flex items-center gap-1.5 text-sm bg-gray-800 text-white px-3 py-1.5 rounded hover:bg-gray-700" do %>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          New Board
+        <% end %>
       </div>
     </nav>
-    <main class="pt-12">
+    <main class="pt-12 flex-1">
       <% if notice %>
-        <div class="bg-green-50 border-b border-green-200 px-4 py-2 text-sm text-green-700"><%= notice %></div>
+        <div class="bg-green-50 border-b border-green-200 px-4 py-2 text-sm text-green-700 flex items-center gap-2">
+          <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <%= notice %>
+        </div>
       <% end %>
       <%= yield %>
     </main>
+    <footer class="bg-white border-t border-gray-200 py-4 px-4 text-xs text-gray-400">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>&copy; 2026 Ikbhal. All rights reserved.</span>
+        <span class="flex items-center gap-4">
+          <a href="mailto:theikbhal@gmail.com" class="hover:text-gray-600">theikbhal@gmail.com</a>
+          <span>ikbhal</span>
+          <span>9901014560</span>
+          <%= link_to "GitHub", "https://github.com/theikbhal/trello", class: "hover:text-gray-600", target: "_blank" %>
+        </span>
+      </div>
+    </footer>
   </body>
 </html>
